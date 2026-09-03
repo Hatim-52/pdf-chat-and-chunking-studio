@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Font family overrides */
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Header Gradient & Style */
+.title-container {
+    padding: 1.5rem 0rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+.app-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    padding-bottom: 0.5rem;
+}
+.app-subtitle {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Metrics Card styling */
+.metric-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+.metric-card {
+    flex: 1;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-align: center;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-color: #cbd5e1;
+}
+[data-theme="dark"] .metric-card {
+    background-color: #1e293b;
+    border-color: #334155;
+}
+[data-theme="dark"] .metric-card:hover {
+    border-color: #475569;
+}
+.metric-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #4f46e5;
+}
+[data-theme="dark"] .metric-value {
+    color: #818cf8;
+}
+.metric-label {
+    font-size: 0.8rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+    font-weight: 600;
+}
+[data-theme="dark"] .metric-label {
+    color: #94a3b8;
+}
+
+/* Chat source citations */
+.citation-container {
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    background-color: #f1f5f9;
+    border-left: 3px solid #6366f1;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.85rem;
+}
+[data-theme="dark"] .citation-container {
+    background-color: #0f172a;
+    border-left-color: #818cf8;
+}
+.citation-header {
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 0.25rem;
+}
+[data-theme="dark"] .citation-header {
+    color: #94a3b8;
+}
+.citation-score {
+    float: right;
+    font-size: 0.75rem;
+    color: #10b981;
+    font-weight: bold;
+}
+
+/* Utility buttons */
+.stDownloadButton button {
+    width: 100%;
+}
