@@ -4,38 +4,38 @@
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.30%2B-FF4B4B.svg)](https://streamlit.io/)
 
-An interactive, user-friendly Streamlit web application that lets you upload PDF documents, explore different text-chunking parameters, view real-time chunking analytics, compare multiple chunking strategies side-by-side, and chat with your documents using Retrieval-Augmented Generation (RAG).
+An interactive Streamlit web application that lets you upload PDF documents, explore and configure text chunking parameters, view real-time chunking analytics, compare multiple strategies side by side, and chat with your documents using Retrieval-Augmented Generation (RAG).
 
-## 🚀 Features
+## Features
 
-- **Multi-Strategy Chunking**:
-  - **Recursive Character splitting** (recommended): Splits by paragraphs, then sentences, then words.
-  - **Semantic splitting**: Computes TF-IDF sentence distance and identifies natural topic transition boundaries.
-  - **Sentence-based splitting**: Respects grammatical sentence boundaries (`.`, `!`, `?`).
-  - **Fixed-size Character splitting**: Uniform character-length slices with overlap.
-- **Interactive Visual Analytics**:
-  - Live charts showing chunk length distribution.
-  - Core statistics: Total Pages, Total Chunks, Average Chunk Size.
-  - Searchable data table to inspect and filter individual chunks.
-  - Download options to export chunks to CSV or JSON formats.
-- **📊 Strategy Comparison Studio**:
-  - Side-by-side comparison of two chunking configurations on the same document.
-  - Overlay distribution histogram charts.
-  - **Visual Chunk Alignment Inspector**: Color-coded HTML boundary highlights showing exactly where chunk boundaries occur.
-- **💬 RAG Chat Studio & Advanced Settings**:
-  - **Local TF-IDF mode**: Runs completely offline, zero-config. No API keys or external servers required!
-  - **OpenAI mode**: Connects to OpenAI embeddings and GPT-4o / GPT-4o-mini models.
-  - **Ollama mode**: Connects to a local running Ollama instance to use local open-weights LLMs.
-  - **Configurable Top K & Similarity Score Threshold**: Filter out low-relevance passages.
-  - **Custom System Prompt Template**: Inject tailored instructions or use `{context}` placeholders.
-  - **Export Chat History**: Download conversation history in JSON format.
-  - **Confirmation-Guarded Chat Clearing**: Popover-protected reset button.
-- **Traceability / Source Citation**: View exactly which parts of the document were retrieved with calculated similarity scores and page numbers.
-- **Premium UI & UX**: Modern typography (Inter font), custom metrics cards, responsive layouts, and smooth animations.
+### Multi-Strategy Chunking
+- Recursive Character Splitting: Uses hierarchical separators (paragraphs, newlines, spaces, characters) to maintain natural text flow.
+- Semantic Splitting: Analyzes sentence term frequencies and cosine distances to split at topic transitions.
+- Sentence-Based Splitting: Segments text along grammatical sentence boundaries.
+- Fixed-Size Character Splitting: Chunks text into uniform lengths with customizable overlap.
 
----
+### Interactive Analytics
+- Real-time chunk character length distribution histogram.
+- Key document statistics including total pages, total chunks, and average chunk size.
+- Filterable and searchable chunk explorer table.
+- Data export options to JSON and CSV formats.
 
-## 🛠️ Setup & Installation
+### Strategy Comparison Studio
+- Side-by-side comparison of two independent chunking configurations on the same document.
+- Overlaid size distribution charts for visual comparison.
+- Visual chunk alignment inspector displaying color-coded boundary highlights directly on page text.
+
+### RAG Chat Studio and Search Options
+- Local TF-IDF mode: Runs completely offline without API keys or external services.
+- OpenAI mode: Integrates with text-embedding-3-small and GPT-4o / GPT-4o-mini models.
+- Ollama mode: Connects to a local Ollama instance to run open-weights language models.
+- Configurable top-k retrieval and similarity score thresholds.
+- Custom system prompt templates with optional context placeholders.
+- Export full conversation history as JSON.
+- Protected clear-history action with confirmation popover.
+- Source citations with similarity scores and page numbers for transparent answers.
+
+## Installation and Setup
 
 ### 1. Clone the Repository
 ```bash
@@ -44,7 +44,7 @@ cd pdf-chat-chunking-studio
 ```
 
 ### 2. Install Dependencies
-Make sure you have Python 3.10+ installed. In your terminal, run:
+Ensure Python 3.10 or higher is installed, then run:
 ```bash
 pip install -r requirements.txt
 ```
@@ -55,49 +55,44 @@ Start the Streamlit development server:
 python -m streamlit run app.py --server.port 8504
 ```
 
-The application will be accessible in your web browser at:
+Access the application in your browser at:
 `http://localhost:8504`
 
----
-
-## 📂 File Structure
+## Project Structure
 
 ```
-├── app.py                  # Main lightweight orchestrator (~85 lines)
-├── style.css               # Clean stylesheet
-├── ui_components.py        # Reusable UI cards, boundary highlights & citations
+├── app.py                  # Main lightweight orchestrator
+├── style.css               # Application stylesheet
+├── ui_components.py        # Reusable metric cards, boundary visualizer, and citations
 ├── views/
 │   ├── __init__.py
-│   ├── analysis_view.py    # Tab 1: Upload, Chunking & Live Analytics
-│   ├── comparison_view.py  # Tab 2: Strategy Comparison & Visual Inspector
-│   └── chat_view.py        # Tab 3: RAG Chat Studio & History Export
-├── chunker.py              # Text extraction (PyMuPDF) & 4 chunking strategies
-├── rag_engine.py           # Vector search & RAG generation pipelines
-├── requirements.txt        # Python package dependencies
+│   ├── analysis_view.py    # Document upload, chunking, and live analytics
+│   ├── comparison_view.py  # Strategy comparison and visual boundary inspector
+│   └── chat_view.py        # RAG chat studio and export options
+├── chunker.py              # PDF extraction and chunking implementations
+├── rag_engine.py           # In-memory vector indices and generation pipelines
+├── requirements.txt        # Package dependencies
 ├── LICENSE                 # MIT License
 ├── .gitignore              # Git ignore rules
-└── README.md               # Project documentation
+└── README.md               # Documentation
 ```
 
----
+## How It Works
 
-## 💡 How It Works
+### Chunking Logic
+1. Recursive Character: Evaluates text against a sequence of separators (`\n\n`, `\n`, ` `, `""`) starting from the largest block. Backtracking preserves target overlap.
+2. Semantic: Tokenizes sentences, builds term vectors, calculates cosine distance between adjacent sentences, and places boundaries where semantic distance exceeds the percentile threshold.
+3. Sentence-Based: Breaks text by punctuation regex and joins sentences until the target chunk size is reached.
+4. Fixed-Size: Slices character windows directly using step size `chunk_size - chunk_overlap`.
 
-### Chunking Strategies
-1. **Recursive Character**: Uses a hierarchy of separators (`\n\n`, `\n`, ` `, `""`) to split text into chunks while preserving paragraph and sentence integrity.
-2. **Semantic**: Tokenizes sentences, builds term frequency vectors, computes cosine distances between adjacent sentences, and places boundaries at points of high topic divergence.
-3. **Sentence-based**: Splits by punctuation boundaries (`.`, `!`, `?`) and aggregates sentences up to the specified chunk size with overlap.
-4. **Fixed-size Character**: Slices text into uniform blocks of fixed character length.
+### Retrieval and Response Generation
+- Document chunks are indexed into an in-memory vector space upon processing.
+- In Local mode, TF-IDF vectors compute cosine similarity against user questions, returning ranked source passages and key sentence extractions.
+- In OpenAI or Ollama modes, embeddings calculate cosine similarity to retrieve the top matching passages, which are then passed to the model prompt to generate grounded responses.
 
-### Retrieval & Generation
-- When a document is processed, a vector index is constructed in-memory.
-- For **Local TF-IDF**, a Term Frequency-Inverse Document Frequency matrix is constructed using NumPy with cosine similarity matching and extractive sentence ranking.
-- For **OpenAI** and **Ollama**, embeddings are generated for each chunk. Cosine similarity retrieves the top $K$ chunks filtered by the similarity threshold, which are then passed to the LLM.
+## License
 
----
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
