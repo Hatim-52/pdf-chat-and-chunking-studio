@@ -1,6 +1,5 @@
 # PDF Chat & Chunking Studio
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.30%2B-FF4B4B.svg)](https://streamlit.io/)
 
@@ -72,7 +71,6 @@ Access the application in your browser at:
 ├── chunker.py              # PDF extraction and chunking implementations
 ├── rag_engine.py           # In-memory vector indices and generation pipelines
 ├── requirements.txt        # Package dependencies
-├── LICENSE                 # MIT License
 ├── .gitignore              # Git ignore rules
 └── README.md               # Documentation
 ```
@@ -89,10 +87,3 @@ Access the application in your browser at:
 - Document chunks are indexed into an in-memory vector space upon processing.
 - In Local mode, TF-IDF vectors compute cosine similarity against user questions, returning ranked source passages and key sentence extractions.
 - In OpenAI or Ollama modes, embeddings calculate cosine similarity to retrieve the top matching passages, which are then passed to the model prompt to generate grounded responses.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-
-
