@@ -1,6 +1,6 @@
 import streamlit as st
 import json
-from ui_components import render_citation
+from ui.ui_components import render_citation
 
 def render_chat_tab(config: dict):
     """Renders Tab 3: RAG Chat Studio."""

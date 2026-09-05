@@ -3,9 +3,9 @@ import pandas as pd
 import altair as alt
 import json
 import time
-from chunker import extract_pages_from_pdf, chunk_document
-from rag_engine import RAGEngine
-from ui_components import render_metrics
+from core.chunker import extract_pages_from_pdf, chunk_document
+from core.rag_engine import RAGEngine
+from ui.ui_components import render_metrics
 
 def render_analysis_tab(config: dict):
     """Renders Tab 1: Document Upload & Chunking Analysis."""

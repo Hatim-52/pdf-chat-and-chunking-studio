@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 import re
-from chunker import chunk_document, RecursiveCharacterTextSplitter, SemanticTextSplitter
-from ui_components import render_comparison_metric_card, render_boundary_highlights
+from core.chunker import chunk_document, RecursiveCharacterTextSplitter, SemanticTextSplitter
+from ui.ui_components import render_comparison_metric_card, render_boundary_highlights
 
 def _split_sample(sample_text: str, params: dict) -> list[str]:
     """Helper to split a small sample text for visual boundary inspection."""
