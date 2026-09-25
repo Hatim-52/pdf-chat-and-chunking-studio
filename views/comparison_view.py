@@ -37,7 +37,23 @@ def render_comparison_tab():
     st.subheader("📊 Chunking Strategy Comparison")
     
     if not st.session_state.pages:
-        st.info("💡 Please upload a document in the 'Document & Chunking Analysis' tab first to enable comparison.")
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+                    border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 2.8rem 2rem;
+                    text-align: center; margin-top: 1.5rem; backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
+            <div style="font-size: 2.8rem; margin-bottom: 0.8rem; filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.4));">⚖️</div>
+            <div style="font-family: 'Outfit', sans-serif; font-size: 1.35rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.5rem;">
+                Comparison Studio Awaiting Ingestion
+            </div>
+            <div style="color: #94a3b8; font-size: 0.95rem; max-width: 580px; margin: 0 auto 1.6rem auto; line-height: 1.6;">
+                Upload and process a document in the <strong>Document &amp; Chunking Analysis</strong> tab first to unlock side-by-side strategy benchmarking and visual boundary alignment.
+            </div>
+            <div style="display: inline-flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;">
+                <span class="hero-pill-badge" style="background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.25);">📊 Dual Metric Overlays</span>
+                <span class="hero-pill-badge" style="background: rgba(52, 211, 153, 0.1); border-color: rgba(52, 211, 153, 0.25);">🔬 Character Boundary Inspector</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         return
         
     st.write("Compare different chunking strategies and parameter configurations on the same uploaded document.")
@@ -105,15 +121,31 @@ def render_comparison_tab():
         combined_df = pd.concat([df_a, df_b])
         
         if not combined_df.empty:
-            chart = alt.Chart(combined_df).mark_bar(opacity=0.6, binSpacing=1).encode(
+            chart = alt.Chart(combined_df).mark_bar(opacity=0.75, binSpacing=1, cornerRadiusTopLeft=3, cornerRadiusTopRight=3).encode(
                 alt.X("char_count:Q", bin=alt.Bin(maxbins=20), title="Chunk Character Length"),
                 y=alt.Y('count()', stack=None, title='Number of Chunks'),
-                color=alt.Color('Config:N', scale=alt.Scale(domain=['Config A', 'Config B'], range=['#4f46e5', '#10b981'])),
+                color=alt.Color('Config:N', scale=alt.Scale(domain=['Config A', 'Config B'], range=['#818cf8', '#34d399'])),
                 tooltip=['Config:N', 'count()']
             ).properties(
                 title='Chunk Size Distribution Comparison (Overlay)',
                 height=280
-            ).configure_title(fontSize=14, anchor='start')
+            ).configure_title(
+                fontSize=14, 
+                anchor='start', 
+                color='#f1f5f9'
+            ).configure_axis(
+                labelColor='#94a3b8',
+                titleColor='#cbd5e1',
+                gridColor='rgba(255, 255, 255, 0.06)',
+                domainColor='rgba(255, 255, 255, 0.1)'
+            ).configure_legend(
+                labelColor='#e2e8f0',
+                titleColor='#f1f5f9'
+            ).configure_view(
+                strokeOpacity=0
+            ).configure(
+                background='transparent'
+            )
             st.altair_chart(chart, use_container_width=True)
             
         # Visual Boundary Alignment Inspector
@@ -130,10 +162,10 @@ def render_comparison_tab():
         vis_col1, vis_col2 = st.columns(2)
         with vis_col1:
             st.markdown("#### 🔵 Boundaries (Config A)")
-            html_a = render_boundary_highlights(spl_a, "79, 70, 229", "#4f46e5", "A")
-            st.markdown(f'<div style="max-height: 400px; overflow-y: auto; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px;">{html_a}</div>', unsafe_allow_html=True)
+            html_a = render_boundary_highlights(spl_a, "99, 102, 241", "#818cf8", "Config A")
+            st.markdown(f'<div style="max-height: 420px; overflow-y: auto; border: 1px solid rgba(99, 102, 241, 0.2); background: rgba(15, 23, 42, 0.5); border-radius: 14px; padding: 12px; backdrop-filter: blur(12px);">{html_a}</div>', unsafe_allow_html=True)
             
         with vis_col2:
             st.markdown("#### 🟢 Boundaries (Config B)")
-            html_b = render_boundary_highlights(spl_b, "16, 185, 129", "#10b981", "B")
-            st.markdown(f'<div style="max-height: 400px; overflow-y: auto; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px;">{html_b}</div>', unsafe_allow_html=True)
+            html_b = render_boundary_highlights(spl_b, "52, 211, 153", "#34d399", "Config B")
+            st.markdown(f'<div style="max-height: 420px; overflow-y: auto; border: 1px solid rgba(52, 211, 153, 0.2); background: rgba(15, 23, 42, 0.5); border-radius: 14px; padding: 12px; backdrop-filter: blur(12px);">{html_b}</div>', unsafe_allow_html=True)

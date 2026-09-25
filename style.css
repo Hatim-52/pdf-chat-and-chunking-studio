@@ -1,108 +1,646 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-/* Font family overrides */
-html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif;
+/* ==========================================================================
+   GLOBAL THEME & CINEMATIC COSMIC BACKGROUND
+   Inspired by Lumina & Slate Aesthetic
+   ========================================================================== */
+
+:root {
+    --bg-primary: #060913;
+    --bg-surface: rgba(15, 23, 42, 0.65);
+    --bg-surface-hover: rgba(30, 41, 59, 0.75);
+    --bg-glass-card: rgba(17, 24, 39, 0.6);
+    --bg-glass-border: rgba(255, 255, 255, 0.1);
+    --bg-glass-border-hover: rgba(168, 85, 247, 0.4);
+
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    --accent-indigo: #6366f1;
+    --accent-purple: #a855f7;
+    --accent-cyan: #06b6d4;
+    --accent-emerald: #10b981;
+    --accent-amber: #f59e0b;
+
+    --glow-indigo: rgba(99, 102, 241, 0.35);
+    --glow-purple: rgba(168, 85, 247, 0.25);
+    --glow-cyan: rgba(6, 182, 212, 0.3);
 }
 
-/* Header Gradient & Style */
-.title-container {
-    padding: 1.5rem 0rem;
+/* Base Body & App View Container */
+html,
+body,
+[class*="css"],
+.stApp {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.stApp {
+    background:
+        radial-gradient(ellipse 90% 50% at 50% -10%, rgba(99, 102, 241, 0.25), transparent 70%),
+        radial-gradient(ellipse 60% 40% at 90% 20%, rgba(168, 85, 247, 0.15), transparent 60%),
+        radial-gradient(ellipse 50% 40% at 10% 40%, rgba(6, 182, 212, 0.12), transparent 50%),
+        radial-gradient(circle at 50% 100%, rgba(15, 23, 42, 0.8), #030712 100%) !important;
+    background-attachment: fixed !important;
+    min-height: 100vh;
+}
+
+/* Streamlit Header removal of stark background */
+[data-testid="stHeader"] {
+    background: transparent !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ==========================================================================
+   SIDEBAR: FROSTED GLASS TELEMETRY PANEL
+   ========================================================================== */
+
+[data-testid="stSidebar"] {
+    background: rgba(8, 12, 24, 0.78) !important;
+    backdrop-filter: blur(28px) !important;
+    -webkit-backdrop-filter: blur(28px) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.03em !important;
+    color: #e2e8f0 !important;
+    margin-top: 1rem !important;
+    margin-bottom: 0.6rem !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+[data-testid="stSidebar"] hr {
+    border-color: rgba(255, 255, 255, 0.07) !important;
+    margin: 1.25rem 0 !important;
+}
+
+/* Quick Start Guide Card in Sidebar */
+[data-testid="stSidebar"] .stMarkdown p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   HERO HEADER & LUMINA-INSPIRED FLOATING DOCK
+   ========================================================================== */
+
+.hero-wrapper {
+    position: relative;
+    padding: 2.2rem 2.2rem 1.8rem 2.2rem;
     margin-bottom: 2rem;
-    border-bottom: 1px solid #e2e8f0;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+        0 20px 40px -15px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    overflow: hidden;
 }
-.app-title {
-    font-size: 2.8rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+
+.hero-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.8), rgba(99, 102, 241, 0.8), transparent);
+}
+
+.hero-badge-container {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+}
+
+.hero-pill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 9999px;
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #c7d2fe;
+}
+
+.hero-pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #38bdf8;
+    box-shadow: 0 0 10px #38bdf8;
+    animation: heroPulse 2s infinite ease-in-out;
+}
+
+@keyframes heroPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.4;
+        transform: scale(0.85);
+    }
+}
+
+.hero-title {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 2.85rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1.15 !important;
+    margin: 0 0 0.75rem 0 !important;
+    color: #ffffff !important;
+}
+
+.hero-gradient-text {
+    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 40%, #a855f7 70%, #6366f1 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin: 0;
-    padding-bottom: 0.5rem;
-}
-.app-subtitle {
-    color: #64748b;
-    font-size: 1.1rem;
-    margin: 0;
 }
 
-/* Metrics Card styling */
-.metric-container {
+.hero-subtitle {
+    font-size: 1.05rem;
+    color: #94a3b8;
+    max-width: 820px;
+    line-height: 1.6;
+    margin: 0 0 1.6rem 0;
+    font-weight: 400;
+}
+
+/* Glass Feature Dock (Inspired by Lumina bottom bar) */
+.hero-dock {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 0.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hero-dock-item {
     display: flex;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-.metric-card {
-    flex: 1;
-    background-color: #f8fafc;
-    border: 1px solid #e2e8f0;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 0.65rem 0.85rem;
     border-radius: 12px;
-    padding: 1.25rem;
-    text-align: center;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.25s ease;
 }
-.metric-card:hover {
+
+.hero-dock-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(168, 85, 247, 0.3);
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    border-color: #cbd5e1;
 }
-[data-theme="dark"] .metric-card {
-    background-color: #1e293b;
-    border-color: #334155;
+
+.dock-icon {
+    font-size: 1.2rem;
+    padding: 0.4rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-[data-theme="dark"] .metric-card:hover {
-    border-color: #475569;
+
+.dock-content {
+    display: flex;
+    flex-direction: column;
 }
-.metric-value {
-    font-size: 1.8rem;
+
+.dock-title {
+    font-size: 0.78rem;
     font-weight: 700;
-    color: #4f46e5;
+    color: #f1f5f9;
+    letter-spacing: 0.02em;
 }
-[data-theme="dark"] .metric-value {
-    color: #818cf8;
-}
-.metric-label {
-    font-size: 0.8rem;
+
+.dock-desc {
+    font-size: 0.72rem;
     color: #64748b;
+}
+
+/* ==========================================================================
+   NAVIGATION TABS: FLOATING GLASS CAPSULES
+   ========================================================================== */
+
+.stTabs [data-baseweb="tab-list"] {
+    background: rgba(15, 23, 42, 0.55) !important;
+    padding: 6px !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    gap: 8px !important;
+    backdrop-filter: blur(16px) !important;
+    margin-bottom: 1.8rem !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+.stTabs [data-baseweb="tab"] {
+    height: 44px !important;
+    padding: 0 1.4rem !important;
+    border-radius: 12px !important;
+    color: #94a3b8 !important;
+    font-weight: 600 !important;
+    font-size: 0.92rem !important;
+    border: none !important;
+    background: transparent !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.stTabs [data-baseweb="tab"]:hover {
+    color: #f8fafc !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.stTabs [aria-selected="true"] {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(168, 85, 247, 0.3) 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(168, 85, 247, 0.4) !important;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Remove default Streamlit tab highlight underline */
+.stTabs [data-baseweb="tab-highlight"] {
+    display: none !important;
+}
+
+/* ==========================================================================
+   METRICS CARDS: CINEMATIC FROSTED GLASS
+   ========================================================================== */
+
+.metric-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.metric-card {
+    position: relative;
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.6) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 1.4rem 1.2rem;
+    text-align: center;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow:
+        0 10px 25px -5px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 25%;
+    right: 25%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.6), transparent);
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow:
+        0 15px 35px -5px rgba(99, 102, 241, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.metric-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 60%, #818cf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+    margin-bottom: 0.35rem;
+}
+
+.metric-label {
+    font-size: 0.78rem;
+    color: #94a3b8;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-top: 0.25rem;
+    letter-spacing: 0.08em;
     font-weight: 600;
 }
-[data-theme="dark"] .metric-label {
-    color: #94a3b8;
+
+/* ==========================================================================
+   BUTTONS: SLEEK PILL GLOW (Slate & Lumina Reference)
+   ========================================================================== */
+
+/* Primary Action Buttons */
+.stButton>button[kind="primary"],
+.stButton>button {
+    border-radius: 9999px !important;
+    font-weight: 600 !important;
+    font-size: 0.92rem !important;
+    letter-spacing: 0.02em !important;
+    padding: 0.65rem 1.6rem !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
-/* Chat source citations */
+.stButton>button[kind="primary"] {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #9333ea 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+.stButton>button[kind="primary"]:hover {
+    transform: translateY(-2px) scale(1.01) !important;
+    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.stButton>button[kind="secondary"],
+.stButton>button:not([kind="primary"]) {
+    background: rgba(30, 41, 59, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #e2e8f0 !important;
+    backdrop-filter: blur(12px) !important;
+}
+
+.stButton>button:not([kind="primary"]):hover {
+    background: rgba(51, 65, 85, 0.8) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    transform: translateY(-1px) !important;
+    color: #ffffff !important;
+}
+
+/* Download buttons */
+.stDownloadButton button {
+    border-radius: 9999px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #e2e8f0 !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+    width: 100% !important;
+}
+
+.stDownloadButton button:hover {
+    background: rgba(99, 102, 241, 0.15) !important;
+    border-color: rgba(99, 102, 241, 0.4) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ==========================================================================
+   INPUTS, SELECTBOXES & SLIDERS (Frosted Dark Glass Style)
+   ========================================================================== */
+
+/* Text inputs, TextAreas, Selectboxes */
+.stTextInput>div>div>input,
+.stTextArea>div>div>textarea,
+.stSelectbox>div>div {
+    background: rgba(15, 23, 42, 0.65) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    color: #f8fafc !important;
+    font-size: 0.92rem !important;
+    backdrop-filter: blur(12px) !important;
+    transition: all 0.2s ease !important;
+}
+
+.stTextInput>div>div>input:focus,
+.stTextArea>div>div>textarea:focus,
+.stSelectbox>div>div:focus-within {
+    border-color: rgba(168, 85, 247, 0.6) !important;
+    box-shadow: 0 0 16px rgba(168, 85, 247, 0.25) !important;
+    outline: none !important;
+}
+
+/* Labels */
+.stWidgetLabel p {
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    color: #cbd5e1 !important;
+    letter-spacing: 0.01em !important;
+}
+
+/* Sliders */
+.stSlider div[data-baseweb="slider"] {
+    margin-top: 0.5rem !important;
+}
+
+/* File Uploader Luxury Dropzone */
+[data-testid="stFileUploader"] {
+    background: rgba(15, 23, 42, 0.45) !important;
+    border: 1px dashed rgba(255, 255, 255, 0.15) !important;
+    border-radius: 18px !important;
+    padding: 1.5rem !important;
+    backdrop-filter: blur(12px) !important;
+    transition: all 0.25s ease !important;
+}
+
+[data-testid="stFileUploader"]:hover {
+    border-color: rgba(168, 85, 247, 0.5) !important;
+    background: rgba(30, 41, 59, 0.45) !important;
+    box-shadow: 0 0 25px rgba(124, 58, 237, 0.15) !important;
+}
+
+/* Alert Boxes / Callouts */
+.stAlert {
+    background: rgba(15, 23, 42, 0.7) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 14px !important;
+    backdrop-filter: blur(16px) !important;
+}
+
+/* Expanders */
+.stExpander {
+    background: rgba(15, 23, 42, 0.45) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    backdrop-filter: blur(12px) !important;
+}
+
+.stExpander details summary {
+    color: #e2e8f0 !important;
+    font-weight: 600 !important;
+    font-size: 0.92rem !important;
+}
+
+/* ==========================================================================
+   CHAT VIEW & CITATION CARDS (Lumina Style)
+   ========================================================================== */
+
+/* Streamlit Chat Messages */
+[data-testid="stChatMessage"] {
+    background: rgba(15, 23, 42, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.07) !important;
+    border-radius: 18px !important;
+    padding: 1.2rem 1.4rem !important;
+    margin-bottom: 1rem !important;
+    backdrop-filter: blur(16px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Assistant Message distinct glass sheen */
+[data-testid="stChatMessage"][data-test-role="assistant"] {
+    border-left: 3px solid #818cf8 !important;
+}
+
+/* User Message distinct style */
+[data-testid="stChatMessage"][data-test-role="user"] {
+    background: rgba(99, 102, 241, 0.1) !important;
+    border: 1px solid rgba(99, 102, 241, 0.25) !important;
+}
+
+/* Chat Input Bar - Capsule Pill (Like Screenshot 1) */
+[data-testid="stChatInput"] {
+    border-radius: 9999px !important;
+    background: rgba(15, 23, 42, 0.75) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-testid="stChatInput"]:focus-within {
+    border-color: rgba(168, 85, 247, 0.6) !important;
+    box-shadow: 0 0 25px rgba(124, 58, 237, 0.3) !important;
+}
+
+/* Source Citations Container */
 .citation-container {
-    margin-top: 0.5rem;
-    padding: 0.75rem;
-    background-color: #f1f5f9;
-    border-left: 3px solid #6366f1;
-    border-radius: 0 8px 8px 0;
+    margin-top: 0.75rem;
+    padding: 1rem 1.2rem;
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.4) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 3px solid #38bdf8;
+    border-radius: 0 14px 14px 0;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #cbd5e1;
+    backdrop-filter: blur(12px);
+    transition: all 0.2s ease;
+}
+
+.citation-container:hover {
+    border-left-color: #818cf8;
+    background: rgba(30, 41, 59, 0.7);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.citation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 0.5rem;
     font-size: 0.85rem;
 }
-[data-theme="dark"] .citation-container {
-    background-color: #0f172a;
-    border-left-color: #818cf8;
-}
-.citation-header {
-    font-weight: 600;
-    color: #475569;
-    margin-bottom: 0.25rem;
-}
-[data-theme="dark"] .citation-header {
-    color: #94a3b8;
-}
-.citation-score {
-    float: right;
+
+.citation-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: #7dd3fc;
     font-size: 0.75rem;
-    color: #10b981;
-    font-weight: bold;
+    font-weight: 600;
 }
 
-/* Utility buttons */
-.stDownloadButton button {
-    width: 100%;
+.citation-score {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: #34d399;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    padding: 0.2rem 0.55rem;
+    border-radius: 9999px;
+}
+
+/* ==========================================================================
+   COMPARISON COCKPIT CARDS
+   ========================================================================== */
+
+.comparison-card {
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.7) 0%, rgba(30, 41, 59, 0.4) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 1.4rem;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1.25rem;
+}
+
+.comparison-card-header {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Dataframe & Table Aesthetics */
+[data-testid="stDataFrame"] {
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(168, 85, 247, 0.4);
 }

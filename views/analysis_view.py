@@ -92,7 +92,11 @@ def render_analysis_tab(config: dict):
             
             with col_chart:
                 df = pd.DataFrame(st.session_state.chunks)
-                chart = alt.Chart(df).mark_bar(color='#6366f1').encode(
+                chart = alt.Chart(df).mark_bar(
+                    color='#818cf8',
+                    cornerRadiusTopLeft=4,
+                    cornerRadiusTopRight=4
+                ).encode(
                     alt.X("char_count:Q", bin=alt.Bin(maxbins=20), title="Chunk Character Length"),
                     y=alt.Y('count()', title='Number of Chunks'),
                     tooltip=['count()']
@@ -101,7 +105,17 @@ def render_analysis_tab(config: dict):
                     height=280
                 ).configure_title(
                     fontSize=14,
-                    anchor='start'
+                    anchor='start',
+                    color='#f1f5f9'
+                ).configure_axis(
+                    labelColor='#94a3b8',
+                    titleColor='#cbd5e1',
+                    gridColor='rgba(255, 255, 255, 0.06)',
+                    domainColor='rgba(255, 255, 255, 0.1)'
+                ).configure_view(
+                    strokeOpacity=0
+                ).configure(
+                    background='transparent'
                 )
                 st.altair_chart(chart, use_container_width=True)
                 
@@ -148,4 +162,21 @@ def render_analysis_tab(config: dict):
                 hide_index=True
             )
     else:
-        st.info("💡 Please upload a PDF file to begin. The app will extract the text, split it into chunks, and construct an interactive vector search index.")
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+                    border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 2.8rem 2rem;
+                    text-align: center; margin-top: 1.5rem; backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
+            <div style="font-size: 2.8rem; margin-bottom: 0.8rem; filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.4));">📑</div>
+            <div style="font-family: 'Outfit', sans-serif; font-size: 1.35rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.5rem;">
+                No Document Ingested Yet
+            </div>
+            <div style="color: #94a3b8; font-size: 0.95rem; max-width: 580px; margin: 0 auto 1.6rem auto; line-height: 1.6;">
+                Upload any PDF file above to parse its structure, benchmark chunking strategies, inspect token distributions, and query your knowledge base with zero configuration.
+            </div>
+            <div style="display: inline-flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;">
+                <span class="hero-pill-badge" style="background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.25);">✨ Recursive Character</span>
+                <span class="hero-pill-badge" style="background: rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.25);">🧠 Semantic Embeddings</span>
+                <span class="hero-pill-badge" style="background: rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.25);">⚡ High-Recall RAG</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)

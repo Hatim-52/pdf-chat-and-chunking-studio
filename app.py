@@ -1,5 +1,16 @@
 import streamlit as st
 import ollama
+import importlib
+import ui.ui_components
+import views.analysis_view
+import views.comparison_view
+import views.chat_view
+
+importlib.reload(ui.ui_components)
+importlib.reload(views.analysis_view)
+importlib.reload(views.comparison_view)
+importlib.reload(views.chat_view)
+
 from ui.ui_components import load_css, render_header
 from views.analysis_view import render_analysis_tab
 from views.comparison_view import render_comparison_tab

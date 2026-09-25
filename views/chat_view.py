@@ -4,13 +4,44 @@ from ui.ui_components import render_citation
 
 def render_chat_tab(config: dict):
     """Renders Tab 3: RAG Chat Studio."""
-    st.subheader("💬 Chat with your PDF")
+    st.subheader("💬 RAG Chat Studio")
     
     if not st.session_state.rag_engine:
-        st.info("⚠️ Please upload and process a PDF document in the 'Document & Chunking' tab first to start chatting.")
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+                    border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 2.8rem 2rem;
+                    text-align: center; margin-top: 1.5rem; backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
+            <div style="font-size: 2.8rem; margin-bottom: 0.8rem; filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.4));">💬</div>
+            <div style="font-family: 'Outfit', sans-serif; font-size: 1.35rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.5rem;">
+                Neural Retrieval Engine Inactive
+            </div>
+            <div style="color: #94a3b8; font-size: 0.95rem; max-width: 580px; margin: 0 auto 1.6rem auto; line-height: 1.6;">
+                Please upload and index a PDF document in the <strong>Document &amp; Chunking Analysis</strong> tab first. 
+                Once indexed, you can interrogate passages with grounded source citations and similarity scores.
+            </div>
+            <div style="display: inline-flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;">
+                <span class="hero-pill-badge" style="background: rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.25);">🔍 Vector Similarity Search</span>
+                <span class="hero-pill-badge" style="background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.25);">📜 In-line Page Citations</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         return
         
-    st.write(f"Currently chatting with: `{st.session_state.pdf_name}` via **{config['provider']}** retriever.")
+    st.markdown(f"""
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
+                background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); 
+                border-radius: 14px; padding: 0.75rem 1.2rem; margin-bottom: 1.5rem; backdrop-filter: blur(12px);">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: #34d399; box-shadow: 0 0 8px #34d399;"></span>
+            <span style="color: #e2e8f0; font-size: 0.88rem; font-weight: 600;">Active Knowledge Base:</span>
+            <span style="color: #c7d2fe; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; background: rgba(99, 102, 241, 0.15); padding: 0.2rem 0.5rem; border-radius: 6px; border: 1px solid rgba(99, 102, 241, 0.3);">{st.session_state.pdf_name}</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span class="citation-badge" style="background: rgba(168, 85, 247, 0.12); border-color: rgba(168, 85, 247, 0.3); color: #d8b4fe;">Retriever: {config['provider']}</span>
+            <span class="citation-badge" style="background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3); color: #7dd3fc;">Top K: {config['top_k']}</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Display conversation history
     for msg in st.session_state.messages:
